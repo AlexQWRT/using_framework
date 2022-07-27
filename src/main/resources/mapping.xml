@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entities.EducationPlan">
+        <table name="education_plan" schema="mydb" catalog=""/>
+        <attributes>
+            <id name="id">
+                <column name="id" precision="-1"/>
+            </id>
+            <many-to-one name="subjectsBySubjectId" optional="true" target-entity="entities.Subjects">
+                <join-column name="subject_id" nullable="false" referenced-column-name="subject_id"/>
+            </many-to-one>
+            <many-to-one name="formsByFormId" optional="true" target-entity="entities.Forms">
+                <join-column name="form_id" nullable="false" referenced-column-name="form_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="entities.Forms">
+        <table name="forms" schema="mydb" catalog=""/>
+        <attributes>
+            <id name="formId">
+                <column name="form_id" precision="-1"/>
+            </id>
+            <basic name="formNumber">
+                <column name="form_number" nullable="false" precision="-1"/>
+            </basic>
+            <basic name="formLetter">
+                <column name="form_letter" nullable="false" length="1"/>
+            </basic>
+            <many-to-one name="teachersByTeacherId" optional="true" target-entity="entities.Teachers">
+                <join-column name="teacher_id" nullable="false" referenced-column-name="teacher_id"/>
+            </many-to-one>
+            <one-to-many name="educationPlansByFormId" mapped-by="formsByFormId"
+                         target-entity="entities.EducationPlan"/>
+            <one-to-many name="studentsByFormId" mapped-by="formsByFormId" target-entity="entities.Students"/>
+        </attributes>
+    </entity>
+    <entity class="entities.Marks">
+        <table name="marks" schema="mydb" catalog=""/>
+        <attributes>
+            <id name="id">
+                <column name="id" precision="-1"/>
+            </id>
+            <basic name="mark">
+                <column name="mark" nullable="false" precision="-1"/>
+            </basic>
+            <many-to-one name="studentsByStudentId" optional="true" target-entity="entities.Students">
+                <join-column name="student_id" nullable="false" referenced-column-name="student_id"/>
+            </many-to-one>
+            <many-to-one name="subjectsBySubjectId" optional="true" target-entity="entities.Subjects">
+                <join-column name="subject_id" nullable="false" referenced-column-name="subject_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="entities.Students">
+        <table name="students" schema="mydb" catalog=""/>
+        <attributes>
+            <id name="studentId">
+                <column name="student_id" precision="-1"/>
+            </id>
+            <basic name="studentName">
+                <column name="student_name" nullable="false" length="45"/>
+            </basic>
+            <basic name="studentSurname">
+                <column name="student_surname" nullable="false" length="45"/>
+            </basic>
+            <basic name="studentPatronymic">
+                <column name="student_patronymic" nullable="false" length="45"/>
+            </basic>
+            <many-to-one name="formsByFormId" optional="true" target-entity="entities.Forms">
+                <join-column name="form_id" nullable="false" referenced-column-name="form_id"/>
+            </many-to-one>
+            <one-to-many name="marksByStudentId" mapped-by="studentsByStudentId" target-entity="entities.Marks"/>
+        </attributes>
+    </entity>
+    <entity class="entities.Subjects">
+        <table name="subjects" schema="mydb" catalog=""/>
+        <attributes>
+            <id name="subjectId">
+                <column name="subject_id" precision="-1"/>
+            </id>
+            <basic name="subjectName">
+                <column name="subject_name" nullable="false" length="45"/>
+            </basic>
+            <one-to-many name="educationPlansBySubjectId" mapped-by="subjectsBySubjectId"
+                         target-entity="entities.EducationPlan"/>
+            <one-to-many name="marksBySubjectId" mapped-by="subjectsBySubjectId" target-entity="entities.Marks"/>
+            <one-to-many name="teacherSubjectsBySubjectId" mapped-by="subjectsBySubjectId"
+                         target-entity="entities.TeacherSubject"/>
+        </attributes>
+    </entity>
+    <entity class="entities.TeacherSubject">
+        <table name="teacher_subject" schema="mydb" catalog=""/>
+        <attributes>
+            <id name="id">
+                <column name="id" precision="-1"/>
+            </id>
+            <many-to-one name="teachersByTeacherId" optional="true" target-entity="entities.Teachers">
+                <join-column name="teacher_id" nullable="false" referenced-column-name="teacher_id"/>
+            </many-to-one>
+            <many-to-one name="subjectsBySubjectId" optional="true" target-entity="entities.Subjects">
+                <join-column name="subject_id" nullable="false" referenced-column-name="subject_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="entities.Teachers">
+        <table name="teachers" schema="mydb" catalog=""/>
+        <attributes>
+            <id name="teacherId">
+                <column name="teacher_id" precision="-1"/>
+            </id>
+            <basic name="teacherName">
+                <column name="teacher_name" nullable="false" length="45"/>
+            </basic>
+            <basic name="teacherSurname">
+                <column name="teacher_surname" nullable="false" length="45"/>
+            </basic>
+            <basic name="teacherPatronymic">
+                <column name="teacher_patronymic" nullable="false" length="45"/>
+            </basic>
+            <one-to-many name="formsByTeacherId" mapped-by="teachersByTeacherId" target-entity="entities.Forms"/>
+            <one-to-many name="teacherSubjectsByTeacherId" mapped-by="teachersByTeacherId"
+                         target-entity="entities.TeacherSubject"/>
+        </attributes>
+    </entity>
+</entity-mappings>

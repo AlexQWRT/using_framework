@@ -3,11 +3,9 @@ package entities;
 import jakarta.persistence.*;
 
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
-@Table(name = "forms", schema = "mydb", catalog = "")
-public class FormsEntity {
+public class Forms {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "form_id", nullable = false)
@@ -22,12 +20,12 @@ public class FormsEntity {
     @Column(name = "teacher_id", nullable = true)
     private Integer teacherId;
     @OneToMany(mappedBy = "formsByFormId")
-    private Collection<EducationPlanEntity> educationPlansByFormId;
+    private Collection<EducationPlan> educationPlansByFormId;
     @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "teacher_id")
-    private TeachersEntity teachersByTeacherId;
+    private Teachers teachersByTeacherId;
     @OneToMany(mappedBy = "formsByFormId")
-    private Collection<StudentsEntity> studentsByFormId;
+    private Collection<Students> studentsByFormId;
 
     public int getFormId() {
         return formId;
@@ -61,40 +59,27 @@ public class FormsEntity {
         this.teacherId = teacherId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FormsEntity that = (FormsEntity) o;
-        return formId == that.formId && Objects.equals(formNumber, that.formNumber) && Objects.equals(formLetter, that.formLetter) && Objects.equals(teacherId, that.teacherId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(formId, formNumber, formLetter, teacherId);
-    }
-
-    public Collection<EducationPlanEntity> getEducationPlansByFormId() {
+    public Collection<EducationPlan> getEducationPlansByFormId() {
         return educationPlansByFormId;
     }
 
-    public void setEducationPlansByFormId(Collection<EducationPlanEntity> educationPlansByFormId) {
+    public void setEducationPlansByFormId(Collection<EducationPlan> educationPlansByFormId) {
         this.educationPlansByFormId = educationPlansByFormId;
     }
 
-    public TeachersEntity getTeachersByTeacherId() {
+    public Teachers getTeachersByTeacherId() {
         return teachersByTeacherId;
     }
 
-    public void setTeachersByTeacherId(TeachersEntity teachersByTeacherId) {
+    public void setTeachersByTeacherId(Teachers teachersByTeacherId) {
         this.teachersByTeacherId = teachersByTeacherId;
     }
 
-    public Collection<StudentsEntity> getStudentsByFormId() {
+    public Collection<Students> getStudentsByFormId() {
         return studentsByFormId;
     }
 
-    public void setStudentsByFormId(Collection<StudentsEntity> studentsByFormId) {
+    public void setStudentsByFormId(Collection<Students> studentsByFormId) {
         this.studentsByFormId = studentsByFormId;
     }
 }

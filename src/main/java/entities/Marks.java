@@ -2,11 +2,8 @@ package entities;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
-@Table(name = "marks", schema = "mydb", catalog = "")
-public class MarksEntity {
+public class Marks {
     @Basic
     @Column(name = "student_id", nullable = true)
     private Integer studentId;
@@ -16,12 +13,16 @@ public class MarksEntity {
     @Basic
     @Column(name = "mark", nullable = true)
     private Integer mark;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id", nullable = false)
+    private int id;
     @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "student_id")
-    private StudentsEntity studentsByStudentId;
+    private Students studentsByStudentId;
     @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "subject_id")
-    private SubjectsEntity subjectsBySubjectId;
+    private Subjects subjectsBySubjectId;
 
     public Integer getStudentId() {
         return studentId;
@@ -47,32 +48,27 @@ public class MarksEntity {
         this.mark = mark;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MarksEntity that = (MarksEntity) o;
-        return Objects.equals(studentId, that.studentId) && Objects.equals(subjectId, that.subjectId) && Objects.equals(mark, that.mark);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(studentId, subjectId, mark);
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public StudentsEntity getStudentsByStudentId() {
+    public Students getStudentsByStudentId() {
         return studentsByStudentId;
     }
 
-    public void setStudentsByStudentId(StudentsEntity studentsByStudentId) {
+    public void setStudentsByStudentId(Students studentsByStudentId) {
         this.studentsByStudentId = studentsByStudentId;
     }
 
-    public SubjectsEntity getSubjectsBySubjectId() {
+    public Subjects getSubjectsBySubjectId() {
         return subjectsBySubjectId;
     }
 
-    public void setSubjectsBySubjectId(SubjectsEntity subjectsBySubjectId) {
+    public void setSubjectsBySubjectId(Subjects subjectsBySubjectId) {
         this.subjectsBySubjectId = subjectsBySubjectId;
     }
 }

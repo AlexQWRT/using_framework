@@ -3,11 +3,9 @@ package entities;
 import jakarta.persistence.*;
 
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
-@Table(name = "teachers", schema = "mydb", catalog = "")
-public class TeachersEntity {
+public class Teachers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "teacher_id", nullable = false)
@@ -22,9 +20,9 @@ public class TeachersEntity {
     @Column(name = "teacher_patronymic", nullable = true, length = 45)
     private String teacherPatronymic;
     @OneToMany(mappedBy = "teachersByTeacherId")
-    private Collection<FormsEntity> formsByTeacherId;
+    private Collection<Forms> formsByTeacherId;
     @OneToMany(mappedBy = "teachersByTeacherId")
-    private Collection<TeacherSubjectEntity> teacherSubjectsByTeacherId;
+    private Collection<TeacherSubject> teacherSubjectsByTeacherId;
 
     public int getTeacherId() {
         return teacherId;
@@ -58,32 +56,19 @@ public class TeachersEntity {
         this.teacherPatronymic = teacherPatronymic;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TeachersEntity that = (TeachersEntity) o;
-        return teacherId == that.teacherId && Objects.equals(teacherName, that.teacherName) && Objects.equals(teacherSurname, that.teacherSurname) && Objects.equals(teacherPatronymic, that.teacherPatronymic);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(teacherId, teacherName, teacherSurname, teacherPatronymic);
-    }
-
-    public Collection<FormsEntity> getFormsByTeacherId() {
+    public Collection<Forms> getFormsByTeacherId() {
         return formsByTeacherId;
     }
 
-    public void setFormsByTeacherId(Collection<FormsEntity> formsByTeacherId) {
+    public void setFormsByTeacherId(Collection<Forms> formsByTeacherId) {
         this.formsByTeacherId = formsByTeacherId;
     }
 
-    public Collection<TeacherSubjectEntity> getTeacherSubjectsByTeacherId() {
+    public Collection<TeacherSubject> getTeacherSubjectsByTeacherId() {
         return teacherSubjectsByTeacherId;
     }
 
-    public void setTeacherSubjectsByTeacherId(Collection<TeacherSubjectEntity> teacherSubjectsByTeacherId) {
+    public void setTeacherSubjectsByTeacherId(Collection<TeacherSubject> teacherSubjectsByTeacherId) {
         this.teacherSubjectsByTeacherId = teacherSubjectsByTeacherId;
     }
 }

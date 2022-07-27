@@ -2,23 +2,25 @@ package entities;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "education_plan", schema = "mydb", catalog = "")
-public class EducationPlanEntity {
+public class EducationPlan {
     @Basic
     @Column(name = "subject_id", nullable = true)
     private Integer subjectId;
     @Basic
     @Column(name = "form_id", nullable = true)
     private Integer formId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id", nullable = false)
+    private int id;
     @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "subject_id")
-    private SubjectsEntity subjectsBySubjectId;
+    private Subjects subjectsBySubjectId;
     @ManyToOne
     @JoinColumn(name = "form_id", referencedColumnName = "form_id")
-    private FormsEntity formsByFormId;
+    private Forms formsByFormId;
 
     public Integer getSubjectId() {
         return subjectId;
@@ -36,32 +38,27 @@ public class EducationPlanEntity {
         this.formId = formId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EducationPlanEntity that = (EducationPlanEntity) o;
-        return Objects.equals(subjectId, that.subjectId) && Objects.equals(formId, that.formId);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(subjectId, formId);
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public SubjectsEntity getSubjectsBySubjectId() {
+    public Subjects getSubjectsBySubjectId() {
         return subjectsBySubjectId;
     }
 
-    public void setSubjectsBySubjectId(SubjectsEntity subjectsBySubjectId) {
+    public void setSubjectsBySubjectId(Subjects subjectsBySubjectId) {
         this.subjectsBySubjectId = subjectsBySubjectId;
     }
 
-    public FormsEntity getFormsByFormId() {
+    public Forms getFormsByFormId() {
         return formsByFormId;
     }
 
-    public void setFormsByFormId(FormsEntity formsByFormId) {
+    public void setFormsByFormId(Forms formsByFormId) {
         this.formsByFormId = formsByFormId;
     }
 }

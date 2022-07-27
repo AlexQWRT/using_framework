@@ -11,15 +11,11 @@
         <property name="hibernate.connection.characterEncoding">utf8</property>
         <property name="hibernate.default_schema">mydb</property>
         <property name="hibernate.current_session_context_class">thread</property>
-        <property name="show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="show_sql">false</property>
+        <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
 
-        <mapping class="entities.EducationPlanEntity"/>
-        <mapping class="entities.FormsEntity"/>
-        <mapping class="entities.MarksEntity"/>
-        <mapping class="entities.StudentsEntity"/>
-        <mapping class="entities.SubjectsEntity"/>
-        <mapping class="entities.TeacherSubjectEntity"/>
-        <mapping class="entities.TeachersEntity"/>
+        <mapping resource="mapping.xml"/>
+
+
     </session-factory>
 </hibernate-configuration>
