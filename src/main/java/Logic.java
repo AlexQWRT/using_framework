@@ -97,9 +97,9 @@ public class Logic {
         System.out.print("Введите отчество учителя: ");
         patronymic = in.next();
         in.nextLine();
+
         Session session = factory.openSession();
         Transaction tx = null;
-
         try {
             tx = session.beginTransaction();
             Teachers t = new Teachers();
@@ -108,6 +108,7 @@ public class Logic {
             t.setTeacherPatronymic(patronymic);
             session.save(t);
             tx.commit();
+            System.out.println("Учитель успешно добавлен!");
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             e.printStackTrace();
@@ -117,57 +118,90 @@ public class Logic {
     }
 
     public void deleteRecord() {
-        /*db.displayTeacherTable();
-        ArrayList<Integer> teachersIds = db.getTeachersIds();
-        int min = teachersIds.get(0);
-        int max = teachersIds.get(0);
-        for (int i = 0; i < teachersIds.size(); i++) {
-            if (min > teachersIds.get(i)) {
-                min = teachersIds.get(i);
+        Session session = factory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            showTable();
+            ArrayList<Integer> teachersIds = new ArrayList<Integer>(session.createQuery("SELECT teacherId FROM Teachers").getResultList());
+                    session.createQuery("FROM Teachers").getResultList();
+            int min = teachersIds.get(0);
+            int max = teachersIds.get(0);
+            for (int i = 0; i < teachersIds.size(); i++) {
+                if (min > teachersIds.get(i)) {
+                    min = teachersIds.get(i);
+                }
+                if (max < teachersIds.get(i)) {
+                    max = teachersIds.get(i);
+                }
             }
-            if (max < teachersIds.get(i)) {
-                max = teachersIds.get(i);
-            }
-        }
-        System.out.print("Введите id удаляемого учителя: ");
-        int choice = readInt(min, max);
-        while(!teachersIds.contains(choice)) {
-            System.out.println("Введённый вами id не существует, повторите ввод!");
             System.out.print("Введите id удаляемого учителя: ");
-            choice = readInt(min, max);
+            int choice = readInt(min, max);
+            while(!teachersIds.contains(choice)) {
+                System.out.println("Введённый вами id не существует, повторите ввод!");
+                System.out.print("Введите id удаляемого учителя: ");
+                choice = readInt(min, max);
+            }
+            Teachers t = (Teachers) session.get(Teachers.class, choice);
+            session.delete(t);
+            tx.commit();
+            System.out.println("Учитель успешно удалён!");
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
-        db.deleteTeacher(choice);*/
     }
 
     public void editRecord() {
-        /*db.displayTeacherTable();
-        ArrayList<Integer> teachersIds = db.getTeachersIds();
-        int min = teachersIds.get(0);
-        int max = teachersIds.get(0);
-        for (int i = 0; i < teachersIds.size(); i++) {
-            if (min > teachersIds.get(i)) {
-                min = teachersIds.get(i);
+        Session session = factory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            showTable();
+            ArrayList<Integer> teachersIds = new ArrayList<Integer>(session.createQuery("SELECT teacherId FROM Teachers").getResultList());
+            session.createQuery("FROM Teachers").getResultList();
+            int min = teachersIds.get(0);
+            int max = teachersIds.get(0);
+            for (int i = 0; i < teachersIds.size(); i++) {
+                if (min > teachersIds.get(i)) {
+                    min = teachersIds.get(i);
+                }
+                if (max < teachersIds.get(i)) {
+                    max = teachersIds.get(i);
+                }
             }
-            if (max < teachersIds.get(i)) {
-                max = teachersIds.get(i);
+            System.out.print("Введите id редактируемого учителя: ");
+            int choice = readInt(min, max);
+            while(!teachersIds.contains(choice)) {
+                System.out.println("Введённый вами id не существует, повторите ввод!");
+                System.out.print("Введите id удаляемого учителя: ");
+                choice = readInt(min, max);
             }
+            String name = "", surname = "", patronymic = "";
+            System.out.print("Введите имя учителя: ");
+            name = in.next();
+            System.out.print("Введите фамилию учителя: ");
+            surname = in.next();
+            System.out.print("Введите отчество учителя: ");
+            patronymic = in.next();
+            in.nextLine();
+            Teachers t = (Teachers) session.get(Teachers.class, choice);
+            t.setTeacherName(name);
+            t.setTeacherSurname(surname);
+            t.setTeacherPatronymic(patronymic);
+            session.update(t);
+            tx.commit();
+            System.out.println("Учитель успешно отредактирован!");
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
-        System.out.print("Введите id редактируемого учителя: ");
-        int choice = readInt(min, max);
-        while(!teachersIds.contains(choice)) {
-            System.out.println("Введённый вами id не существует, повторите ввод!");
-            System.out.print("Введите id удаляемого учителя: ");
-            choice = readInt(min, max);
-        }
-        String name = "", surname = "", patronymic = "";
-        System.out.print("Введите имя учителя: ");
-        name = in.next();
-        System.out.print("Введите фамилию учителя: ");
-        surname = in.next();
-        System.out.print("Введите отчество учителя: ");
-        patronymic = in.next();
-        in.nextLine();
-        db.editTeacher(choice, name, surname, patronymic);*/
     }
 
     public void executeMenu() {
